@@ -2,6 +2,5 @@ all:
 	cc ./src/*.c `pkg-config --libs --cflags raylib` -o Jpong
 	./Jpong
 
-debug:
-	cc source.c `pkg-config --libs --cflags raylib` -g -o YourGame
-	gdb ./YourGame
+windows: 
+	x86_64-w64-mingw32-gcc -o jpong.exe src/*.c -Llib -lraylib -Iinclude -lgdi32 -lwinmm

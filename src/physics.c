@@ -61,7 +61,7 @@ void updatePhysics(BALL* ball, int* aiScoreInt, int* playerScoreInt, Sound score
         } else {
             ball->Speed.y = abs((int)ball->Speed.y);
         }
-        ball->Speed.y += rand() % 21 - 10;
+        ball->Speed.y += rand() % 21 - 30;
         ball->Speed.x *= -1;
         PlaySound(hitSound);
     }
