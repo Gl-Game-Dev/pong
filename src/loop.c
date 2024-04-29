@@ -1,5 +1,7 @@
 #include "loop.h"
+#include "globals.h"
 #include "raylib.h"
+
 
 void GameLoop() {
     int posx = centerTextX("PONG", 20);
@@ -19,16 +21,21 @@ void GameLoop() {
     InitWindow(screenWidth, screenHeight, "Raylib - Pong");
     InitAudioDevice(); // Initialize audio device
     Music music = LoadMusicStream("assets/music/pongbackground.wav");
-    SetMusicVolume(music, 0.3f); // Set volume, 0.0f (min) to 1.0f (max)
+    SetMusicVolume(music, 0.1f); // Set volume, 0.0f (min) to 1.0f (max)
     PlayMusicStream(music);
     Sound hitSound = LoadSound("assets/sounds/pong.wav");
     Sound scoreSound = LoadSound("assets/sounds/ballscore.wav");
 
-    Texture image = LoadTexture("ball.png");
+    Texture background = LoadTexture("assets/sprites/pongbackground.png");
+    Texture backgroundScrolling = LoadTexture("assets/sprites/pongbackgroundscrolling.png");
+    Texture ballSprite = LoadTexture("assets/sprites/ball.png");
+
 
     SetTargetFPS(90);               // Set our game to run at 60 frames-per-second
     //ToggleFullscreen();
     //--------------------------------------------------------------------------------------
+    float scrollingBackFar; // Far background scrolls slowest
+    float scrollingBackMedium; // Far background scrolls slowest
 
     MainMenu();
     // Main game loop
@@ -38,6 +45,10 @@ void GameLoop() {
         // Update your variables here
         //----------------------------------------------------------------------------------
         float deltaTime = GetFrameTime();
+        scrollingBackFar -= 5.0f *deltaTime;
+        scrollingBackMedium -= 15.0f *deltaTime;
+        if (scrollingBackFar <= -backgroundScrolling.width*2) scrollingBackFar = 0;
+        if (scrollingBackMedium <= -background.width*2) scrollingBackMedium = 0;
 
         checkInput(&player, deltaTime);
         runAI(&ai, &ball.pos, deltaTime);
@@ -47,23 +58,26 @@ void GameLoop() {
 
         UpdateMusicStream(music); // Keeps music playing smoothly
 
-        //  Draw stuff
-        //----------------------------------------------------------------------------------
-
         BeginDrawing();
 
             ClearBackground(BLACK);
 
-            // Draw text
+            // Draw Background
+            DrawTextureEx(background, (Vector2){ scrollingBackMedium, 20 }, 0.0f, 2.0f, WHITE);
+            DrawTextureEx(background, (Vector2){ background.width*2 + scrollingBackMedium, 20 }, 0.0f, 2.0f, WHITE);
+            DrawTextureEx(backgroundScrolling, (Vector2){ scrollingBackFar, 20 }, 0.0f, 2.0f, WHITE);
+            DrawTextureEx(backgroundScrolling, (Vector2){ backgroundScrolling.width*2 + scrollingBackFar, 20 }, 0.0f, 2.0f, WHITE);
+            // Draw HUD
             DrawText(title.TEXT, title.POSX, title.POSY, title.FONTSIZE, title.COLOR);
-            DrawRectangle(0, 30, screenWidth, 1, WHITE);
-            DrawRectangle(0, screenHeight - 1, screenWidth, 1, WHITE);
-            DrawRectangle(player.rect.x, player.rect.y, 20, 100, BLUE);
-            DrawRectangle(ai.rect.x, ai.rect.y, 20, 100, RED);
-            DrawTexture(image, ball.pos.x - 10, ball.pos.y -10, WHITE);
-            DrawCircle(ball.pos.x, ball.pos.y, 10., WHITE);
             DrawText(playerScore, 15, 0, 30, WHITE);
             DrawText(aiScore, screenWidth - 40, 0, 30, WHITE);
+            // Draw boundaries
+            DrawRectangle(0, 30, screenWidth, 1, WHITE);
+            DrawRectangle(0, screenHeight - 1, screenWidth, 1, WHITE);
+            // Draw Player, Ball, and AI
+            DrawCircle(ball.pos.x, ball.pos.y, 10., YELLOW);
+            DrawRectangle(player.rect.x, player.rect.y, 20, 100, BLUE);
+            DrawRectangle(ai.rect.x, ai.rect.y, 20, 100, RED);
 
         EndDrawing();
     }
