@@ -1,4 +1,5 @@
 #include "physics.h"
+#include "globals.h"
 #include <stdlib.h>
 
 void updatePhysics(BALL* ball, int* aiScoreInt, int* playerScoreInt, Sound scoreSound, Player* player, Player* ai, Sound hitSound, float deltaTime) {
@@ -31,16 +32,18 @@ void updatePhysics(BALL* ball, int* aiScoreInt, int* playerScoreInt, Sound score
         ball->Speed.x *= -1;
         (*playerScoreInt) += 1;
         PlaySound(scoreSound);
-        ball->pos.x = 300;
-        ball->pos.y = 300;
+        ball->pos.x = (float)screenWidth/2;
+        ball->pos.y = (float)screenHeight/2;
+        ball->Speed.y = 100;
     }
 
     if (ball->pos.x < 0) {
         ball->Speed.x *= -1;
         (*aiScoreInt) += 1;
         PlaySound(scoreSound);
-        ball->pos.x = 300;
-        ball->pos.y = 300;
+        ball->pos.x = (float)screenWidth/2;
+        ball->pos.y = (float)screenHeight/2;
+        ball->Speed.y = 100;
     }
 
     // Collision with paddles
@@ -51,7 +54,8 @@ void updatePhysics(BALL* ball, int* aiScoreInt, int* playerScoreInt, Sound score
         } else {
             ball->Speed.y = abs((int)ball->Speed.y);
         }
-        ball->Speed.x *= -1;
+        ball->Speed.y += rand() % 100 - 0;
+        ball->Speed.x = abs((int) ball->Speed.x);
         PlaySound(hitSound);
     }
     if (CheckCollisionCircleRec(ball->pos, 10, aiColider)) {
@@ -61,8 +65,8 @@ void updatePhysics(BALL* ball, int* aiScoreInt, int* playerScoreInt, Sound score
         } else {
             ball->Speed.y = abs((int)ball->Speed.y);
         }
-        ball->Speed.y += rand() % 21 - 30;
-        ball->Speed.x *= -1;
+        ball->Speed.y += rand() % 100 - 0;
+        ball->Speed.x = abs((int) ball->Speed.x) * -1;
         PlaySound(hitSound);
     }
 }

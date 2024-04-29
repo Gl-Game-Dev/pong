@@ -19,7 +19,7 @@ void GameLoop() {
     InitWindow(screenWidth, screenHeight, "Raylib - Pong");
     InitAudioDevice(); // Initialize audio device
     Music music = LoadMusicStream("assets/music/pongbackground.wav");
-    SetMusicVolume(music, 0.1f); // Set volume, 0.0f (min) to 1.0f (max)
+    SetMusicVolume(music, 0.3f); // Set volume, 0.0f (min) to 1.0f (max)
     PlayMusicStream(music);
     Sound hitSound = LoadSound("assets/sounds/pong.wav");
     Sound scoreSound = LoadSound("assets/sounds/ballscore.wav");
