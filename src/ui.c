@@ -28,6 +28,8 @@ void MainMenu() {
     while (!WindowShouldClose()) {  // Check if the user has requested to close the window
         BeginDrawing();
         ClearBackground(BLACK);
+        Vector2 mousePosition = GetMousePosition();
+        DrawCircleV(mousePosition, 10, MAROON);
         int posXEndContinue = centerTextX(endTextContinue, 30);
         int posXEndEscape = centerTextX(endTextEscape, 20);
         int controlsY = centerTextY(20);
