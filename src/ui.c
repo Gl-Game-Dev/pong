@@ -21,12 +21,20 @@ void Pause() {
 void MainMenu() {
     char endTextContinue[21] = "PRESS SPACE TO START";
     char endTextEscape[21] = "PRESS ESCAPE TO EXIT";
+    char pausebutton[10] = "P = Pause";
+    char upButton[9] = "Q = Up";
+    char downButton[9] = "A = Down";
 
     while (!WindowShouldClose()) {  // Check if the user has requested to close the window
         BeginDrawing();
         ClearBackground(BLACK);
         int posXEndContinue = centerTextX(endTextContinue, 30);
         int posXEndEscape = centerTextX(endTextEscape, 20);
+        int controlsY = centerTextY(20);
+        int controlsX = centerTextX(pausebutton, 20);
+        DrawText(upButton, 10, 10, 20, BLUE);
+        DrawText(downButton, 10, 40, 20, BLUE);
+        DrawText(pausebutton, 10, 70, 20, BLUE);
         DrawText(endTextContinue, posXEndContinue, screenHeight/2, 30, GREEN);
         DrawText(endTextEscape, posXEndEscape, 20, 20, RED);
         EndDrawing();
